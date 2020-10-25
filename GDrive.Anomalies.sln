@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GDrive.Anomalies", "GDrive.Anomalies\GDrive.Anomalies.csproj", "{86D5E4C6-70AC-4FD2-BA6C-5886F787096A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{690AB6F6-5BBF-44B1-AB7D-704D1D1A71B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestProject1", "XUnitTestProject1\XUnitTestProject1.csproj", "{460B16F5-5346-4B25-BE4F-17D1C2409E6A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86D5E4C6-70AC-4FD2-BA6C-5886F787096A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86D5E4C6-70AC-4FD2-BA6C-5886F787096A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86D5E4C6-70AC-4FD2-BA6C-5886F787096A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86D5E4C6-70AC-4FD2-BA6C-5886F787096A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{690AB6F6-5BBF-44B1-AB7D-704D1D1A71B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{690AB6F6-5BBF-44B1-AB7D-704D1D1A71B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{690AB6F6-5BBF-44B1-AB7D-704D1D1A71B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{690AB6F6-5BBF-44B1-AB7D-704D1D1A71B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{460B16F5-5346-4B25-BE4F-17D1C2409E6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{460B16F5-5346-4B25-BE4F-17D1C2409E6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{460B16F5-5346-4B25-BE4F-17D1C2409E6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{460B16F5-5346-4B25-BE4F-17D1C2409E6A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D6A779AE-0E22-4F0F-A0BF-652FDBB07746}
+	EndGlobalSection
+EndGlobal

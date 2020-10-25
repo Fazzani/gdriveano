@@ -1,0 +1,121 @@
+name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+
+pool:
+  vmImage: $(imageName)
+
+pr:
+  branches:
+    include:
+    - release/*
+    - hotfix/*
+    - features/*
+    - refs/tags/*
+  paths:
+    exclude:
+    - docs/*
+    - README.md
+
+trigger:
+  branches:
+    include:
+     - master
+     - develop
+  paths:
+    exclude:
+    - docs/*
+    - readme.md
+
+variables:
+  buildConfiguration: 'Release'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE : true
+  TestOutputDirectory: '$(Agent.TempDirectory)/testresults'
+  SONAR_PROJECT_KEY: 'gdriveano'
+  SONAR_PROJECT_NAME: 'gdriveano'
+  SONAR_ORG: Fazzani
+
+strategy:
+  matrix:
+    #linux:
+    # imageName: 'ubuntu-16.04'
+    windows:
+      imageName: 'windows-2019'
+
+steps:
+
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: '$(SONAR_ORG)'
+    projectKey: '$(SONAR_PROJECT_KEY)'
+    projectName: '$(SONAR_PROJECT_NAME)'
+    extraProperties: | 
+      sonar.coverage.exclusions=**/*Tests.cs,**/obj/**,**/*.dll
+      sonar.cs.vstest.reportsPaths=$(TestOutputDirectory)/*.trx
+      sonar.coverageReportPaths=$(TestOutputDirectory)/mergedcoveragereport/SonarQube.xml
+
+- task: UseDotNet@2 
+  displayName: ".NET Core 3.1.x"
+  inputs:
+     version: '3.1.x'
+     packageType: sdk
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
+  inputs:
+    command: restore
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build $(buildConfiguration)'
+  inputs:
+    command: build
+    arguments: '--no-restore -c $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test $(buildConfiguration)'
+  continueOnError: true
+  inputs:
+    command: custom
+    custom: test
+    arguments: '--no-restore --no-build -r "$(TestOutputDirectory)" -l trx -p:Exclude=[xunit.*]* -c $(buildConfiguration) -p:CollectCoverage=true "-p:CoverletOutputFormat=\"cobertura,opencover\""'
+
+- task: PublishTestResults@2
+  displayName: Publish Test Results
+  inputs:
+    testResultsFormat: VSTest
+    testResultsFiles: '*.trx'
+    searchFolder: $(TestOutputDirectory)
+    testRunTitle: $(Build.DefinitionName)-$(Build.BuildNumber)
+
+- task: DotNetCoreCLI@2
+  displayName: Install ReportGenerator Global Tool
+  inputs:
+    command: custom
+    custom: tool
+    arguments: install -g dotnet-reportgenerator-globaltool
+
+- task: reportgenerator@4
+  inputs:
+    reports: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+    targetdir: '$(TestOutputDirectory)/mergedcoveragereport'
+    reporttypes: 'Cobertura;SonarQube;Badges'
+    assemblyfilters: '-*Tests*'
+    filefilters: '-*/Migrations/*.cs'
+
+# Publish the code coverage result (summary and web site)
+# The summary allows to view the coverage percentage in the summary tab
+# The web site allows to view which lines are covered directly in Azure Pipeline
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Code Coverage report'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(TestOutputDirectory)/mergedcoveragereport/Cobertura.xml'
+    # reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Run Code Analysis'
+  # This will fail on PR builds https://go.microsoft.com/fwlink/?linkid=862029
+  continueOnError: true
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish Quality Gate Result'
+  continueOnError: true
