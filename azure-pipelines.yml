@@ -6,23 +6,20 @@ pool:
 pr:
   branches:
     include:
-    - release/*
-    - hotfix/*
-    - bugfix/*
-    - feature/*
-    - refs/tags/*
+    - master
+    - develop
+    - refs/tags/v*
   paths:
     exclude:
     - docs/*
     - README.md
 
 trigger:
-  batch: true
   branches:
     include:
-     - master
-     - develop
-     - feature/*
+    - master
+    - develop
+    - refs/tags/v*
   paths:
     exclude:
     - docs/*
