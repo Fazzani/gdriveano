@@ -88,7 +88,7 @@ steps:
 
 - task: UseDotNet@2 
   displayName: ".NET Core 2.2.x For Linux"
-  condition: and(succeeded(), in(variables['Agent.OS'], 'Darwin', 'Linux'))
+  condition: and(succeeded(), in(variables['agent.os'], 'Darwin', 'Linux'))
   inputs:
      version: '2.2.x'
      packageType: sdk
