@@ -1,4 +1,4 @@
-name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+name: $(Build.Reason)_$(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
 
 pool:
   vmImage: $(imageName)
