@@ -86,6 +86,12 @@ steps:
     custom: tool
     arguments: install -g dotnet-reportgenerator-globaltool
 
+- task: UseDotNet@2 
+  displayName: ".NET Core 2.2.x"
+  inputs:
+     version: '2.2.x'
+     packageType: sdk
+
 - task: reportgenerator@4
   displayName: 'Merge Coverage reports'
   continueOnError: true
