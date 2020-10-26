@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestApp
+namespace ConsoleApp
 {
     public static class Extensions
     {

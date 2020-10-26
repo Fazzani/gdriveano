@@ -1,4 +1,4 @@
-﻿namespace TestApp
+﻿namespace ConsoleApp
 {
     public class Car
     {
@@ -9,6 +9,11 @@
         {
             model = this.Model;
             owner = this.Owner;
+        }
+
+        public bool IsMine(string owner)
+        {
+            return owner.Equals(owner, System.StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
