@@ -102,16 +102,6 @@ steps:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(TestOutputDirectory)/mergedcoveragereport/Cobertura.xml'
 
-- task: CopyFiles@2
-  displayName: 'Copy coverage files to $(Agent.TempDirectory)'
-  inputs:
-    sourceFolder: $(Agent.TempDirectory)
-    contents: |
-        TestResults/mergedcoveragereport/*.xml
-    targetFolder: "$(Agent.TempDirectory)"
-    overWrite: true
-    flattenFolders: true
-
 - task: SonarCloudAnalyze@1
   displayName: 'Run Code Analysis'
   continueOnError: true
