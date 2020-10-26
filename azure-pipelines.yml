@@ -51,7 +51,7 @@ steps:
     projectName: '$(SONAR_PROJECT_NAME)'
     extraProperties: | 
       sonar.coverage.exclusions=**/*Tests.cs,**/obj/**,**/*.dll
-      sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/coverage.opencover.xml
+      sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
 
 - task: UseDotNet@2 
   displayName: ".NET Core 3.1.x"
@@ -88,9 +88,9 @@ steps:
   displayName: 'Merge Coverage reports'
   continueOnError: true
   inputs:
-    reports: '$(Agent.TempDirectory)/**/coverage.opencover.xml'
+    reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
     targetdir: '$(TestOutputDirectory)/mergedcoveragereport'
-    reporttypes: 'Cobertura;SonarQube;Badges'
+    reporttypes: 'Cobertura'
     assemblyfilters: '-*Tests*'
     filefilters: '-*/Migrations/*.cs'
 
@@ -107,8 +107,6 @@ steps:
     sourceFolder: $(Agent.TempDirectory)
     contents: |
         TestResults/mergedcoveragereport/*.xml
-        **/coverage.cobertura.xml
-        **/coverage.opencover.xml
     targetFolder: "$(Agent.TempDirectory)"
     overWrite: true
     flattenFolders: true
