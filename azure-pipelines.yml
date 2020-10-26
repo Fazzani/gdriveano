@@ -29,14 +29,15 @@ variables:
   buildConfiguration: 'Release'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE : true
   TestOutputDirectory: '$(Agent.TempDirectory)/TestResults'
+  COV_REPORTS_DIR: '$(TestOutputDirectory)/mergedcoveragereport'
   SONAR_PROJECT_KEY: 'gdriveano'
   SONAR_PROJECT_NAME: 'gdriveano'
   SONAR_ORG: fazzani-github
 
 strategy:
   matrix:
-    #linux:
-    # imageName: 'ubuntu-16.04'
+    linux:
+      imageName: 'ubuntu-16.04'
     windows:
       imageName: 'windows-2019'
 
@@ -90,7 +91,7 @@ steps:
   continueOnError: true
   inputs:
     reports: '$(Agent.TempDirectory)/**/coverage.opencover.xml'
-    targetdir: '$(TestOutputDirectory)/mergedcoveragereport'
+    targetdir: '$(COV_REPORTS_DIR)'
     reporttypes: 'Cobertura'
     assemblyfilters: '-*Tests*'
     filefilters: '-*/Migrations/*.cs'
@@ -100,7 +101,7 @@ steps:
   continueOnError: true
   inputs:
     codeCoverageTool: Cobertura
-    summaryFileLocation: '$(TestOutputDirectory)/mergedcoveragereport/Cobertura.xml'
+    summaryFileLocation: '$(COV_REPORTS_DIR)/Cobertura.xml'
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run Code Analysis'
