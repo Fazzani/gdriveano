@@ -52,6 +52,7 @@ steps:
     extraProperties: | 
       sonar.coverage.exclusions=**/*Tests.cs,**/obj/**,**/*.dll
       sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
+      sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
 
 - task: UseDotNet@2 
   displayName: ".NET Core 3.1.x"
@@ -75,7 +76,7 @@ steps:
   inputs:
     projects: '**/*Tests.csproj'
     command: test
-    arguments: '--no-restore --no-build -p:Exclude=[xunit.*]* -c $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
+    arguments: '--no-restore --no-build -p:Exclude=[xunit.*]* -c $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover'
 
 - task: DotNetCoreCLI@2
   displayName: Install ReportGenerator Global Tool
@@ -88,7 +89,7 @@ steps:
   displayName: 'Merge Coverage reports'
   continueOnError: true
   inputs:
-    reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+    reports: '$(Agent.TempDirectory)/**/coverage.opencover.xml'
     targetdir: '$(TestOutputDirectory)/mergedcoveragereport'
     reporttypes: 'Cobertura'
     assemblyfilters: '-*Tests*'
