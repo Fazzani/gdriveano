@@ -5,7 +5,7 @@ using System;
 
 namespace GDrive.Anomalies
 {
-    internal class GFileComparer : IEqualityComparer<File>
+    public class GFileComparer : IEqualityComparer<File>
     {
         public bool Equals([DisallowNull] File x, [DisallowNull] File y)
         {
@@ -18,7 +18,7 @@ namespace GDrive.Anomalies
     /// <summary>
     /// Copy detected and check by size and file extension
     /// </summary>
-    internal class GFileStrictComparer : IEqualityComparer<File>
+    public class GFileStrictComparer : IEqualityComparer<File>
     {
         const string CopyString = "Copie de ";
 
@@ -32,7 +32,7 @@ namespace GDrive.Anomalies
         {
             if (x.FileExtension != null && !x.FileExtension.Equals(y.FileExtension, StringComparison.OrdinalIgnoreCase))
                 return false;
-            
+
             return x.Size == y.Size && y.NormalizeGFileName().Equals(x.NormalizeGFileName(), StringComparison.OrdinalIgnoreCase);
         }
 

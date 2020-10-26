@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAnomaliesTests", "GAnomaliesTests\GAnomaliesTests.csproj", "{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{460B16F5-5346-4B25-BE4F-17D1C2409E6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{460B16F5-5346-4B25-BE4F-17D1C2409E6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{460B16F5-5346-4B25-BE4F-17D1C2409E6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,5 @@
 ﻿using Google.Apis.Drive.v3.Data;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GDrive.Anomalies
 {
@@ -20,6 +18,6 @@ namespace GDrive.Anomalies
         }
 
         public static string ToText(this File file)
-            => file.IsFolder() ? $"   Folder ======== { file.Name} ({file.Id})" : $"{ file.Name} ({file.Id})";
+            => file.IsFolder() ? $"Folder ======== { file.Name} ({file.Id})" : $"{ file.Name} ({file.Id})";
     }
 }
