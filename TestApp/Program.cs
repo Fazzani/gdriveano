@@ -4,11 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 namespace ConsoleApp
 {
     [ExcludeFromCodeCoverage]
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
-
             var car = new Car { Model = "Audi", Owner = "Heni" };
             var (model, owner) = car;
 

@@ -1,30 +1,31 @@
-﻿using Google.Apis.Auth.OAuth2;
-using Google.Apis.Drive.v3;
-using Google.Apis.Drive.v3.Data;
-using Google.Apis.Services;
-using Google.Apis.Util.Store;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Drive.v3;
+using Google.Apis.Drive.v3.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
 using GFile = Google.Apis.Drive.v3.Data.File;
 
 namespace GDrive.Anomalies
 {
     [ExcludeFromCodeCoverage]
-    static class Program
+    internal static class Program
     {
         // If modifying these scopes, delete your previously saved credentials
         // at ~/.credentials/drive-dotnet-quickstart.json
-        static readonly string[] Scopes = { DriveService.Scope.DriveReadonly };
-        static readonly string ApplicationName = "GDrive-Anomalies";
-        static readonly HashSet<GFile> _allGFiles = new HashSet<GFile>(new GFileStrictComparer());
-        static readonly HashSet<GFile> _allFolders = new HashSet<GFile>(new GFileStrictComparer());
-        static readonly HashSet<GFile> _allDuplicated = new HashSet<GFile>();
+        private static readonly string[] Scopes = { DriveService.Scope.DriveReadonly };
 
-        static async Task Main(string[] args)
+        private const string ApplicationName = "GDrive-Anomalies";
+        private static readonly HashSet<GFile> _allGFiles = new HashSet<GFile>(new GFileStrictComparer());
+        private static readonly HashSet<GFile> _allFolders = new HashSet<GFile>(new GFileStrictComparer());
+        private static readonly HashSet<GFile> _allDuplicated = new HashSet<GFile>();
+
+        private static async Task Main()
         {
             var credential = Connect("credentials-tunisien.json");
 
@@ -34,7 +35,7 @@ namespace GDrive.Anomalies
                 ApplicationName = ApplicationName,
             });
 
-            await ListFiles(service, pageSize: 20);
+            await ListFiles(service, pageSize: 20).ConfigureAwait(false);
             Console.WriteLine($"Total file count; {_allGFiles.Count}");
             Console.WriteLine($"Total folder count; {_allFolders.Count}");
             Console.WriteLine($"Total duplicated files count; {_allDuplicated.Count}");
@@ -64,10 +65,10 @@ namespace GDrive.Anomalies
                 }
 
                 // List files.
-                var fileListResponse = await listRequest.ExecuteAsync(cancellationToken);
+                var fileListResponse = await listRequest.ExecuteAsync(cancellationToken).ConfigureAwait(false);
                 Console.WriteLine(string.Empty);
 
-                if (fileListResponse.Files != null && fileListResponse.Files.Count > 0)
+                if (fileListResponse.Files?.Count > 0)
                 {
                     foreach (var file in fileListResponse.Files)
                     {
@@ -75,7 +76,7 @@ namespace GDrive.Anomalies
                         if (file.IsFolder())
                         {
                             Console.WriteLine(string.Empty);
-                            await ListFiles(service, default, pageSize: pageSize, parentId: file.Id, cancellationToken: cancellationToken);
+                            await ListFiles(service, default, pageSize: pageSize, parentId: file.Id, cancellationToken: cancellationToken).ConfigureAwait(false);
                             _allFolders.Add(file);
                         }
                         else
@@ -91,8 +92,8 @@ namespace GDrive.Anomalies
                     {
                         try
                         {
-                            Console.WriteLine($">> To the next page");
-                            await ListFiles(service, fileListResponse.NextPageToken, pageSize, parentId, spaces, cancellationToken);
+                            Console.WriteLine(">> To the next page");
+                            await ListFiles(service, fileListResponse.NextPageToken, pageSize, parentId, spaces, cancellationToken).ConfigureAwait(false);
                         }
                         catch (Exception ex)
                         {

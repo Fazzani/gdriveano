@@ -1,8 +1,5 @@
 ﻿using GDrive.Anomalies;
 using Google.Apis.Drive.v3.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace GAnomaliesTests
