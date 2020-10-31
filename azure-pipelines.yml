@@ -43,6 +43,7 @@ strategy:
 steps:
 
 - task: SonarCloudPrepare@1
+  displayName: 'SonarCloud Prepare'
   inputs:
     SonarCloud: 'Sonarqube'
     organization: '$(SONAR_ORG)'
@@ -50,8 +51,8 @@ steps:
     projectName: '$(SONAR_PROJECT_NAME)'
     extraProperties: | 
       sonar.coverage.exclusions=**/*Tests.cs,**/obj/**,**/*.dll
-      sonar.cs.vstest.reportsPaths=$(TestOutputDirectory)\*.trx
-      sonar.cs.opencover.reportsPaths=$(TestOutputDirectory)\**\coverage.opencover.xml
+      sonar.cs.vstest.reportsPaths=$(TestOutputDirectory)/*.trx
+      sonar.cs.opencover.reportsPaths=Agent.TempDirectory/coverage.opencover.xml
 
 - task: UseDotNet@2 
   displayName: ".NET Core 3.1.x"
@@ -60,31 +61,22 @@ steps:
      packageType: sdk
 
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet restore'
+  displayName: '.NET restore'
   inputs:
     command: restore
 
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: '.NET build $(buildConfiguration)'
   inputs:
     command: build
     arguments: '--no-restore -c $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet test $(buildConfiguration)'
-  continueOnError: true
+  displayName: '.NET test $(buildConfiguration)'
   inputs:
-    command: custom
-    custom: test
-    arguments: '--no-restore --no-build -r "$(TestOutputDirectory)" -l trx -p:Exclude=[xunit.*]* -c $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
-
-- task: PublishTestResults@2
-  displayName: Publish Test Results
-  inputs:
-    testResultsFormat: VSTest
-    testResultsFiles: '*.trx'
-    searchFolder: $(TestOutputDirectory)
-    testRunTitle: $(Build.DefinitionName)-$(Build.BuildNumber)
+    projects: '**/*Tests.csproj'
+    command: test
+    arguments: '--no-restore --no-build -p:Exclude=[xunit.*]* -c $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
 
 - task: DotNetCoreCLI@2
   displayName: Install ReportGenerator Global Tool
@@ -95,37 +87,35 @@ steps:
 
 - task: reportgenerator@4
   displayName: 'Merge Coverage reports'
+  continueOnError: true
   inputs:
-    reports: '$(TestOutputDirectory)/**/coverage.cobertura.xml'
+    reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
     targetdir: '$(TestOutputDirectory)/mergedcoveragereport'
     reporttypes: 'Cobertura;SonarQube;Badges'
     assemblyfilters: '-*Tests*'
     filefilters: '-*/Migrations/*.cs'
-  continueOnError: true
 
-# Publish the code coverage result (summary and web site)
-# The summary allows to view the coverage percentage in the summary tab
-# The web site allows to view which lines are covered directly in Azure Pipeline
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish Code Coverage report'
+  continueOnError: true
   inputs:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(TestOutputDirectory)/mergedcoveragereport/Cobertura.xml'
-    # reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
-  continueOnError: true
 
 - task: CopyFiles@2
   displayName: 'Copy coverage files to $(Agent.TempDirectory)'
   inputs:
-    sourceFolder: $(TestOutputDirectory)
-    contents: '**\*.xml'
+    sourceFolder: $(Agent.TempDirectory)
+    contents: |
+        testresults/mergedcoveragereport\*.xml
+        **\coverage.cobertura.xml
+        **\coverage.opencover.xml
     targetFolder: "$(Agent.TempDirectory)"
     overWrite: true
     flattenFolders: true
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run Code Analysis'
-  # This will fail on PR builds https://go.microsoft.com/fwlink/?linkid=862029
   continueOnError: true
 
 - task: SonarCloudPublish@1
