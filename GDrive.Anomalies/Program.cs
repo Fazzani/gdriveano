@@ -7,14 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GFile = Google.Apis.Drive.v3.Data.File;
 
 namespace GDrive.Anomalies
 {
+    [ExcludeFromCodeCoverage]
     class Program
     {
         // If modifying these scopes, delete your previously saved credentials
