@@ -8,7 +8,7 @@ pr:
     include:
     - release/*
     - hotfix/*
-    - features/*
+    - feature/*
     - refs/tags/*
   paths:
     exclude:
@@ -16,10 +16,12 @@ pr:
     - README.md
 
 trigger:
+  batch: true
   branches:
     include:
      - master
      - develop
+     - feature/*
   paths:
     exclude:
     - docs/*
@@ -31,7 +33,7 @@ variables:
   TestOutputDirectory: '$(Agent.TempDirectory)/testresults'
   SONAR_PROJECT_KEY: 'gdriveano'
   SONAR_PROJECT_NAME: 'gdriveano'
-  SONAR_ORG: Fazzani
+  SONAR_ORG: fazzani-github
 
 strategy:
   matrix:
@@ -44,14 +46,14 @@ steps:
 
 - task: SonarCloudPrepare@1
   inputs:
-    SonarCloud: 'SonarCloud'
+    SonarCloud: 'Sonarqube'
     organization: '$(SONAR_ORG)'
     projectKey: '$(SONAR_PROJECT_KEY)'
     projectName: '$(SONAR_PROJECT_NAME)'
     extraProperties: | 
       sonar.coverage.exclusions=**/*Tests.cs,**/obj/**,**/*.dll
-      sonar.cs.vstest.reportsPaths=$(TestOutputDirectory)/*.trx
-      sonar.coverageReportPaths=$(TestOutputDirectory)/mergedcoveragereport/SonarQube.xml
+      sonar.cs.vstest.reportsPaths=$(TestOutputDirectory)\*.trx
+      sonar.cs.opencover.reportsPaths=$(TestOutputDirectory)\**\coverage.opencover.xml
 
 - task: UseDotNet@2 
   displayName: ".NET Core 3.1.x"
@@ -76,7 +78,7 @@ steps:
   inputs:
     command: custom
     custom: test
-    arguments: '--no-restore --no-build -r "$(TestOutputDirectory)" -l trx -p:Exclude=[xunit.*]* -c $(buildConfiguration) -p:CollectCoverage=true "-p:CoverletOutputFormat=\"cobertura,opencover\""'
+    arguments: '--no-restore --no-build -r "$(TestOutputDirectory)" -l trx -p:Exclude=[xunit.*]* -c $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
 
 - task: PublishTestResults@2
   displayName: Publish Test Results
@@ -94,12 +96,14 @@ steps:
     arguments: install -g dotnet-reportgenerator-globaltool
 
 - task: reportgenerator@4
+  displayName: 'Merge Coverage reports'
   inputs:
-    reports: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+    reports: '$(TestOutputDirectory)/**/coverage.cobertura.xml'
     targetdir: '$(TestOutputDirectory)/mergedcoveragereport'
     reporttypes: 'Cobertura;SonarQube;Badges'
     assemblyfilters: '-*Tests*'
     filefilters: '-*/Migrations/*.cs'
+  continueOnError: true
 
 # Publish the code coverage result (summary and web site)
 # The summary allows to view the coverage percentage in the summary tab
@@ -110,6 +114,16 @@ steps:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(TestOutputDirectory)/mergedcoveragereport/Cobertura.xml'
     # reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
+  continueOnError: true
+
+- task: CopyFiles@2
+  displayName: 'Copy coverage files to $(Agent.TempDirectory)'
+  inputs:
+    sourceFolder: $(TestOutputDirectory)
+    contents: '**\*.xml'
+    targetFolder: "$(Agent.TempDirectory)"
+    overWrite: true
+    flattenFolders: true
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run Code Analysis'
