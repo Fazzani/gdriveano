@@ -1,4 +1,10 @@
-name: $(Build.Reason)_$(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+
+parameters:
+- name: sonar_enabled
+  displayName: Sonar enabled
+  type: boolean
+  default: true
 
 pool:
   vmImage: $(imageName)
@@ -43,17 +49,18 @@ strategy:
 
 steps:
 
-- task: SonarCloudPrepare@1
-  displayName: 'SonarCloud Prepare'
-  inputs:
-    SonarCloud: 'Sonarqube'
-    organization: '$(SONAR_ORG)'
-    projectKey: '$(SONAR_PROJECT_KEY)'
-    projectName: '$(SONAR_PROJECT_NAME)'
-    extraProperties: | 
-      sonar.coverage.exclusions=**/*Tests.cs,**/obj/**,**/*.dll
-      sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
-      sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
+- ${{ if eq(parameters.sonar_enabled, true) }}:
+    - task: SonarCloudPrepare@1
+      displayName: 'SonarCloud Prepare'
+      inputs:
+        SonarCloud: 'Sonarqube'
+        organization: '$(SONAR_ORG)'
+        projectKey: '$(SONAR_PROJECT_KEY)'
+        projectName: '$(SONAR_PROJECT_NAME)'
+        extraProperties: | 
+          sonar.coverage.exclusions=**/*Tests.cs,**/obj/**,**/*.dll
+          sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
+          sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
 
 - task: UseDotNet@2 
   displayName: ".NET Core 3.1.x"
@@ -110,10 +117,12 @@ steps:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(COV_REPORTS_DIR)/Cobertura.xml'
 
-- task: SonarCloudAnalyze@1
-  displayName: 'Run Code Analysis'
-  continueOnError: true
+- ${{ if eq(parameters.sonar_enabled, true) }}:
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run Code Analysis'
+      continueOnError: true
 
-- task: SonarCloudPublish@1
-  displayName: 'Publish Quality Gate Result'
-  continueOnError: true
+- ${{ if eq(parameters.sonar_enabled, true) }}:
+    - task: SonarCloudPublish@1
+      displayName: 'Publish Quality Gate Result'
+      continueOnError: true

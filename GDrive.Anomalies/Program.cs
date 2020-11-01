@@ -14,7 +14,7 @@ using GFile = Google.Apis.Drive.v3.Data.File;
 namespace GDrive.Anomalies
 {
     [ExcludeFromCodeCoverage]
-    class Program
+    static class Program
     {
         // If modifying these scopes, delete your previously saved credentials
         // at ~/.credentials/drive-dotnet-quickstart.json
@@ -34,7 +34,7 @@ namespace GDrive.Anomalies
                 ApplicationName = ApplicationName,
             });
 
-            var _ = await ListFiles(service, pageSize: 20);
+            await ListFiles(service, pageSize: 20);
             Console.WriteLine($"Total file count; {_allGFiles.Count}");
             Console.WriteLine($"Total folder count; {_allFolders.Count}");
             Console.WriteLine($"Total duplicated files count; {_allDuplicated.Count}");
@@ -75,7 +75,7 @@ namespace GDrive.Anomalies
                         if (file.IsFolder())
                         {
                             Console.WriteLine(string.Empty);
-                            var _ = await ListFiles(service, default, pageSize: pageSize, parentId: file.Id, cancellationToken: cancellationToken);
+                            await ListFiles(service, default, pageSize: pageSize, parentId: file.Id, cancellationToken: cancellationToken);
                             _allFolders.Add(file);
                         }
                         else
@@ -92,7 +92,7 @@ namespace GDrive.Anomalies
                         try
                         {
                             Console.WriteLine($">> To the next page");
-                            var _ = await ListFiles(service, fileListResponse.NextPageToken, pageSize, parentId, spaces, cancellationToken);
+                            await ListFiles(service, fileListResponse.NextPageToken, pageSize, parentId, spaces, cancellationToken);
                         }
                         catch (Exception ex)
                         {
@@ -132,7 +132,5 @@ namespace GDrive.Anomalies
 
             return credential;
         }
-
     }
-
 }

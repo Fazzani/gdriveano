@@ -20,7 +20,7 @@ namespace GDrive.Anomalies
     /// </summary>
     public class GFileStrictComparer : IEqualityComparer<File>
     {
-        const string CopyString = "Copie de ";
+        public const string CopyString = "Copie de ";
 
         /// <summary>
         /// Copy detected and check by size and file extension
