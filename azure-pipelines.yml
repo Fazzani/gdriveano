@@ -42,8 +42,8 @@ variables:
 
 strategy:
   matrix:
-    linux:
-      imageName: 'ubuntu-16.04'
+    # linux:
+    #  imageName: 'ubuntu-16.04'
     windows:
       imageName: 'windows-2019'
 
@@ -57,12 +57,12 @@ steps:
         organization: '$(SONAR_ORG)'
         projectKey: '$(SONAR_PROJECT_KEY)'
         projectName: '$(SONAR_PROJECT_NAME)'
-        extraProperties: | 
+        extraProperties: |
           sonar.coverage.exclusions=**/*Tests.cs,**/obj/**,**/*.dll
           sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
           sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
 
-- task: UseDotNet@2 
+- task: UseDotNet@2
   displayName: ".NET Core 3.1.x"
   inputs:
      version: '3.1.x'
@@ -93,7 +93,7 @@ steps:
     custom: tool
     arguments: install -g dotnet-reportgenerator-globaltool
 
-- task: UseDotNet@2 
+- task: UseDotNet@2
   displayName: ".NET Core 2.2.x For Linux"
   condition: and(succeeded(), in(variables['agent.os'], 'Darwin', 'Linux'))
   inputs:
