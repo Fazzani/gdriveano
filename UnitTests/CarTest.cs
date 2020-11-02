@@ -1,4 +1,3 @@
-using System;
 using ConsoleApp;
 using Xunit;
 
@@ -9,8 +8,8 @@ namespace UnitTests
         [Fact]
         public void DestructCarTest()
         {
-            var expectedModel = "Audi";
-            var expectedOwner = "Heni";
+            const string expectedModel = "Audi";
+            const string expectedOwner = "Heni";
 
             var car = new Car { Model = expectedModel, Owner = expectedOwner };
             var (model, owner) = car;
@@ -22,7 +21,7 @@ namespace UnitTests
         [Fact]
         public void DestructCarTest2()
         {
-            string expectedModel = null;
+            const string expectedModel = null;
             var expectedOwner = string.Empty;
 
             var car = new Car { Model = expectedModel, Owner = expectedOwner };
@@ -35,7 +34,7 @@ namespace UnitTests
         [Fact]
         public void IsMineTest()
         {
-            string expectedModel = "Heni";
+            const string expectedModel = "Heni";
             var expectedOwner = string.Empty;
 
             var car = new Car { Model = expectedModel, Owner = expectedOwner };

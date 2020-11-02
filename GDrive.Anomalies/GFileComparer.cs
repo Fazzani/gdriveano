@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Google.Apis.Drive.v3.Data;
-using System;
 
 namespace GDrive.Anomalies
 {
@@ -30,7 +30,7 @@ namespace GDrive.Anomalies
         /// <returns></returns>
         public bool Equals([DisallowNull] File x, [DisallowNull] File y)
         {
-            if (x.FileExtension != null && !x.FileExtension.Equals(y.FileExtension, StringComparison.OrdinalIgnoreCase))
+            if (x.FileExtension?.Equals(y.FileExtension, StringComparison.OrdinalIgnoreCase) == false)
                 return false;
 
             return x.Size == y.Size && y.NormalizeGFileName().Equals(x.NormalizeGFileName(), StringComparison.OrdinalIgnoreCase);

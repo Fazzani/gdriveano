@@ -1,11 +1,11 @@
-﻿using Google.Apis.Drive.v3.Data;
-using System;
+﻿using System;
+using Google.Apis.Drive.v3.Data;
 
 namespace GDrive.Anomalies
 {
     public static class Extensions
     {
-        const string CopyString = "Copie de ";
+        public const string CopyString = "Copie de ";
 
         public static string NormalizeGFileName(this File file)
         {

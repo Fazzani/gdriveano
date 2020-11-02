@@ -16,7 +16,7 @@ namespace GAnomaliesTests
         [Fact]
         public void NormalizeGFileNameTest()
         {
-            var folderName = "FolderName";
+            const string folderName = "FolderName";
             var file = new File { Name = $"{GFileStrictComparer.CopyString}{folderName}", Id = "FolderID", MimeType = "application/vnd.google-apps.folder" };
             var name = file.NormalizeGFileName();
             Assert.StartsWith(folderName, name);
