@@ -1,0 +1,68 @@
+name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+
+parameters:
+- name: var_group_name
+  displayName: Variable group name
+  type: string
+  default: Common
+
+pool:
+  vmImage: $(imageName)
+
+pr:
+  branches:
+    include:
+    - master
+    - develop
+    - refs/tags/v*
+  paths:
+    exclude:
+    - docs/*
+    - README.md
+
+trigger:
+  branches:
+    include:
+    - master
+    - develop
+    - refs/tags/v*
+    - feature/*
+  paths:
+    exclude:
+    - docs/*
+    - readme.md
+
+variables:
+  - group: Common
+  - name: buildConfiguration
+    value: 'Release'
+
+strategy:
+  matrix:
+    linux:
+     imageName: 'ubuntu-16.04'
+
+steps:
+
+- task: AzureCLI@2
+  inputs:
+    scriptType: 'bash'
+    displayName: Create var
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo $MY_AZURE_DEVOPS_PAT | az devops login
+      az pipelines variable-group list --org $MY_AZURE_DEVOPS_ORG -p SynkerAPI
+      varGroupId = $(az pipelines variable-group list --org $MY_AZURE_DEVOPS_ORG -p SynkerAPI --query "[?name=='${{ parameters.var_group_name }}'].id" -o tsv)
+      az pipelines variable-group variable create --id $varGroupId --name "test" --value "testValue" --org $MY_AZURE_DEVOPS_ORG -p SynkerAPI
+
+- task: AzureCLI@2
+  inputs:
+    scriptType: 'bash'
+    displayName: Delete var
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az pipelines variable-group list --org $MY_AZURE_DEVOPS_ORG -p SynkerAPI
+      varGroupId = $(az pipelines variable-group list --org $MY_AZURE_DEVOPS_ORG -p SynkerAPI --query "[?name=='${{ parameters.var_group_name }}'].id" -o tsv)
+      az pipelines variable-group variable delete --id $varGroupId --name "test"  --org $MY_AZURE_DEVOPS_ORG -p SynkerAPI
+
+
