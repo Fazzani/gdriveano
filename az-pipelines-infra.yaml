@@ -73,7 +73,6 @@ steps:
           az pipelines variable-group variable update --id $varGroupId --name "$(var_name)" --value "$(var_value)" --org $AZ_DEVOPS_BASE_URL -p SynkerAPI
           exit 0;
         }
-      echo $varGroupId
       az pipelines variable-group variable create --id $varGroupId --name "$(var_name)" --value "$(var_value)" --org $AZ_DEVOPS_BASE_URL -p SynkerAPI
 
 - task: AzureCLI@2

@@ -47,7 +47,6 @@ namespace GDrive.Anomalies
             Console.ReadKey();
         }
 
-        [SuppressMessage("UnitTests", "S3776: Cognitive Complexity of methods should not be too high")]
         private static async Task<FileList> ListFiles(DriveService service, string nextPageToken = default, int pageSize = 10, string parentId = "", string spaces = "drive", CancellationToken cancellationToken = default)
         {
             try
