@@ -41,8 +41,6 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE : true
-  TestOutputDirectory: '$(Agent.TempDirectory)/TestResults'
-  COV_REPORTS_DIR: '$(TestOutputDirectory)/mergedcoveragereport'
   SONAR_PROJECT_KEY: 'gdriveano'
   SONAR_PROJECT_NAME: 'gdriveano'
   SONAR_ORG: fazzani-github
@@ -54,4 +52,10 @@ strategy:
     windows:
       imageName: 'windows-2019'
 steps:
-- template: dotnet-classic-build.yml@azurepipelines
+- template: az-dotnet-core-sonar.yml@azurepipelines
+  parameters:
+    sonar_project_org: $(SONAR_ORG)
+    sonar_project_key: $(SONAR_PROJECT_KEY)
+    sonar_project_name: $(SONAR_PROJECT_NAME)
+    buildConfiguration: $(buildConfiguration)
+    sonar_connection_service: sonarqube
