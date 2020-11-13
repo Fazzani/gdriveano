@@ -54,4 +54,5 @@ strategy:
     windows:
       imageName: 'windows-2019'
 
-- template: dotnet-classic-build.yml@azurepipelines
+jobs:
+  - template: dotnet-classic-build.yml@azurepipelines
