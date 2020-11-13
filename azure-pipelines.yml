@@ -4,7 +4,7 @@ resources:
   repositories:
     - repository: 'azurepipelines'
       type: 'github'
-      name: 'fazzani/azurepipelines'
+      name: 'Fazzani/azurepipelines'
       endpoint: 'fazzani'
 
 parameters:
@@ -55,4 +55,4 @@ strategy:
       imageName: 'windows-2019'
 
 jobs:
-  - template: dotnet-classic-build.yml@azurepipelines
+- template: dotnet-classic-build.yml@azurepipelines
