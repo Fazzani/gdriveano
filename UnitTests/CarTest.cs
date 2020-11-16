@@ -38,6 +38,7 @@ namespace UnitTests
             var expectedOwner = string.Empty;
 
             var car = new Car { Model = expectedModel, Owner = expectedOwner };
+            car.Model = "test";
 
             Assert.True(car.IsMine(expectedOwner));
         }

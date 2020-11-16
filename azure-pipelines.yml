@@ -1,5 +1,12 @@
 name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
 
+resources:
+  repositories:
+    - repository: 'azurepipelines'
+      type: 'github'
+      name: 'Fazzani/azurepipelines'
+      endpoint: 'fazzani'
+
 parameters:
 - name: sonar_enabled
   displayName: Sonar enabled
@@ -34,8 +41,6 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE : true
-  TestOutputDirectory: '$(Agent.TempDirectory)/TestResults'
-  COV_REPORTS_DIR: '$(TestOutputDirectory)/mergedcoveragereport'
   SONAR_PROJECT_KEY: 'gdriveano'
   SONAR_PROJECT_NAME: 'gdriveano'
   SONAR_ORG: fazzani-github
@@ -46,83 +51,11 @@ strategy:
     #  imageName: 'ubuntu-16.04'
     windows:
       imageName: 'windows-2019'
-
 steps:
-
-- ${{ if eq(parameters.sonar_enabled, true) }}:
-    - task: SonarCloudPrepare@1
-      displayName: 'SonarCloud Prepare'
-      inputs:
-        SonarCloud: 'Sonarqube'
-        organization: '$(SONAR_ORG)'
-        projectKey: '$(SONAR_PROJECT_KEY)'
-        projectName: '$(SONAR_PROJECT_NAME)'
-        extraProperties: |
-          sonar.coverage.exclusions=**/*Tests.cs,**/obj/**,**/*.dll
-          sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
-          sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
-
-- task: UseDotNet@2
-  displayName: ".NET Core 3.1.x"
-  inputs:
-     version: '3.1.x'
-     packageType: sdk
-
-- task: DotNetCoreCLI@2
-  displayName: '.NET restore'
-  inputs:
-    command: restore
-
-- task: DotNetCoreCLI@2
-  displayName: '.NET build $(buildConfiguration)'
-  inputs:
-    command: build
-    arguments: '--no-restore -c $(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  displayName: '.NET test $(buildConfiguration)'
-  inputs:
-    projects: '**/*Tests.csproj'
-    command: test
-    arguments: '--no-restore --no-build -p:Exclude=[xunit.*]* -c $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover'
-
-- task: DotNetCoreCLI@2
-  displayName: Install ReportGenerator Global Tool
-  inputs:
-    command: custom
-    custom: tool
-    arguments: install -g dotnet-reportgenerator-globaltool
-
-- task: UseDotNet@2
-  displayName: ".NET Core 2.2.x For Linux"
-  condition: and(succeeded(), in(variables['agent.os'], 'Darwin', 'Linux'))
-  inputs:
-     version: '2.2.x'
-     packageType: sdk
-
-- task: reportgenerator@4
-  displayName: 'Merge Coverage reports'
-  continueOnError: true
-  inputs:
-    reports: '$(Agent.TempDirectory)/**/coverage.opencover.xml'
-    targetdir: '$(COV_REPORTS_DIR)'
-    reporttypes: 'Cobertura'
-    assemblyfilters: '-*Tests*'
-    filefilters: '-*/Migrations/*.cs'
-
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish Code Coverage report'
-  continueOnError: true
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(COV_REPORTS_DIR)/Cobertura.xml'
-
-- ${{ if eq(parameters.sonar_enabled, true) }}:
-    - task: SonarCloudAnalyze@1
-      displayName: 'Run Code Analysis'
-      continueOnError: true
-
-- ${{ if eq(parameters.sonar_enabled, true) }}:
-    - task: SonarCloudPublish@1
-      displayName: 'Publish Quality Gate Result'
-      continueOnError: true
+- template: dotnet-classic-build.yml@azurepipelines
+  parameters:
+    sonar_project_org: $(SONAR_ORG)
+    sonar_project_key: $(SONAR_PROJECT_KEY)
+    sonar_project_name: $(SONAR_PROJECT_NAME)
+    buildConfiguration: $(buildConfiguration)
+    sonar_connection_service: sonarqube
