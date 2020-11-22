@@ -6,6 +6,7 @@ resources:
       type: 'github'
       name: 'Fazzani/azurepipelines'
       endpoint: 'fazzani'
+      ref: refs/tags/v1.0.1
 
 parameters:
 - name: sonar_enabled
@@ -39,11 +40,22 @@ trigger:
     - readme.md
 
 variables:
-  buildConfiguration: 'Release'
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE : true
-  SONAR_PROJECT_KEY: 'gdriveano'
-  SONAR_PROJECT_NAME: 'gdriveano'
-  SONAR_ORG: fazzani-github
+  - name: buildConfiguration
+    value: 'Release'
+  - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+    value: true
+  - name: SONAR_PROJECT_KEY
+    value: 'gdriveano'
+  - name: SONAR_PROJECT_NAME
+    value: 'gdriveano'
+  - name: SONAR_ORG
+    value: fazzani-github
+  - name: buildProjects
+    value:
+      '**/*.csproj'
+  - name: testProjects
+    value:
+      '**/*Tests.csproj'
 
 strategy:
   matrix:
@@ -52,10 +64,15 @@ strategy:
     windows:
       imageName: 'windows-2019'
 steps:
-- template: dotnet-classic-build.yml@azurepipelines
+- template: ci/az-dotnet-core-sonar.yml@azurepipelines
   parameters:
+    sonar_enabled: ${{ parameters.sonar_enabled }}
     sonar_project_org: $(SONAR_ORG)
     sonar_project_key: $(SONAR_PROJECT_KEY)
     sonar_project_name: $(SONAR_PROJECT_NAME)
     buildConfiguration: $(buildConfiguration)
     sonar_connection_service: sonarqube
+    buildProjects:
+      $(buildProjects)
+    testProjects:
+      $(testProjects)
