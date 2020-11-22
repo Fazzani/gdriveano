@@ -6,6 +6,7 @@ resources:
       type: 'github'
       name: 'Fazzani/azurepipelines'
       endpoint: 'fazzani'
+      ref: refs/tags/v1.0.1
 
 parameters:
 - name: sonar_enabled
@@ -63,7 +64,7 @@ strategy:
     windows:
       imageName: 'windows-2019'
 steps:
-- template: az-dotnet-core-sonar.yml@azurepipelines
+- template: ci/az-dotnet-core-sonar.yml@azurepipelines
   parameters:
     sonar_enabled: ${{ parameters.sonar_enabled }}
     sonar_project_org: $(SONAR_ORG)
