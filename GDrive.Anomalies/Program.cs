@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using GDrive.Anomalies.Library;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
@@ -47,7 +48,6 @@ namespace GDrive.Anomalies
             Console.ReadKey();
         }
 
-        [SuppressMessage("UnitTests", "S3776: Cognitive Complexity of methods should not be too high")]
         private static async Task<FileList> ListFiles(DriveService service, string nextPageToken = default, int pageSize = 10, string parentId = "", string spaces = "drive", CancellationToken cancellationToken = default)
         {
             try

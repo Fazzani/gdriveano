@@ -1,7 +1,7 @@
 ﻿using System;
 using Google.Apis.Drive.v3.Data;
 
-namespace GDrive.Anomalies
+namespace GDrive.Anomalies.Library
 {
     public static class Extensions
     {
@@ -9,7 +9,7 @@ namespace GDrive.Anomalies
 
         public static string NormalizeGFileName(this File file)
         {
-            return file.Name.LastIndexOf(CopyString) >= 0 ? file.Name.Substring(CopyString.Length) : file.Name;
+            return file.Name.LastIndexOf(CopyString) >= 0 ? file.Name[CopyString.Length..] : file.Name;
         }
 
         public static bool IsFolder(this File file)

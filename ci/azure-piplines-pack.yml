@@ -1,0 +1,50 @@
+resources:
+  repositories:
+    - repository: 'azurepipelines'
+      type: 'github'
+      name: 'Fazzani/azurepipelines'
+      endpoint: 'fazzani'
+      ref: refs/tags/v1.0.2
+
+pool:
+  vmImage: $(imageName)
+
+pr: none
+
+trigger:
+  branches:
+    include:
+    - master
+    - feature/*
+    - refs/tags/*
+  paths:
+    exclude:
+    - docs/*
+    - readme.md
+
+variables:
+  - group: Common
+  - name: buildConfiguration
+    value: 'Release'
+  - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+    value: true
+
+strategy:
+  matrix:
+    linux:
+     imageName: 'ubuntu-16.04'
+     dotnet_version: '5.0.x'
+    # windows:
+    #   imageName: 'windows-2019'
+    #   dotnet_version: '5.0.x'
+steps:
+- template: ci/az-dotnet-core-pack.yml@azurepipelines
+  parameters:
+    dotnet_version: $(dotnet_version)
+    buildConfiguration: $(buildConfiguration)
+    vsts_feed: $(VSTS_FEED)
+    buildProjects: '**/*/GDrive.Anomalies.Library.csproj'
+    restoreProjects: '**/*/GDrive.Anomalies.Library.csproj'
+    gitversion_path: 'GDrive.Anomalies.Library/GitVersion.yml'
+    packagesToPack: |
+        '**/GDrive.Anomalies.Library.csproj'
