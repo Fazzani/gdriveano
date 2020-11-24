@@ -1,7 +1,7 @@
 ﻿using System;
 using Google.Apis.Drive.v3.Data;
 
-namespace GDrive.Anomalies
+namespace GDrive.Anomalies.Library
 {
     public static class Extensions
     {

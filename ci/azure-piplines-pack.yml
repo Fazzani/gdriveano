@@ -1,5 +1,3 @@
-name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
-
 resources:
   repositories:
     - repository: 'azurepipelines'
@@ -44,8 +42,9 @@ steps:
   parameters:
     dotnet_version: $(dotnet_version)
     buildConfiguration: $(buildConfiguration)
-    vsts_feed: $(Common.VSTS_FEED_PAT)
+    vsts_feed: $(VSTS_FEED)
     buildProjects: '**/*/GDrive.Anomalies.Library.csproj'
     restoreProjects: '**/*/GDrive.Anomalies.Library.csproj'
+    gitversion_path: 'GDrive.Anomalies.Library/GitVersion.yml'
     packagesToPack: |
         '**/GDrive.Anomalies.Library.csproj'

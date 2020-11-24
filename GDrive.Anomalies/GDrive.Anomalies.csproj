@@ -6,7 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.Drive.v3" Version="1.49.0.2131" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.49.0.2145" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GDrive.Anomalies.Library\GDrive.Anomalies.Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>

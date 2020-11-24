@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.24</FileVersion>
+    <InformationalVersion>1.1.0-alpha.24+Branch.feature-add-az-pipeline-pack.Sha.b3cf91923d40d51db750919a278ec0d689c4385e</InformationalVersion>
+    <Version>1.1.0-alpha0024</Version>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>GDrive.Anomalies.Library</PackageId>
+    <PackageTags>google drive;gdrive</PackageTags>
+    <Description>
+      This client library enables working with the google drive services
+      Anomalies detections (ex: duplicated files)
+    </Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.49.0.2145" />
+  </ItemGroup>
+</Project>
