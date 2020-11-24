@@ -8,12 +8,6 @@ resources:
       endpoint: 'fazzani'
       ref: refs/tags/v1.0.2
 
-parameters:
-- name: sonar_enabled
-  displayName: Sonar enabled
-  type: boolean
-  default: true
-
 pool:
   vmImage: $(imageName)
 
@@ -23,7 +17,7 @@ trigger:
   branches:
     include:
     - master
-    - feature
+    - feature/*
     - refs/tags/*
   paths:
     exclude:
@@ -41,17 +35,17 @@ strategy:
   matrix:
     linux:
      imageName: 'ubuntu-16.04'
-     dotnet_version: '5.0.X'
+     dotnet_version: '5.0.x'
     # windows:
     #   imageName: 'windows-2019'
-    #   dotnet_version: '5.0.X'
+    #   dotnet_version: '5.0.x'
 steps:
-- template: ci/az-dotnet-core.yml@azurepipelines
+- template: ci/az-dotnet-core-pack.yml@azurepipelines
   parameters:
     dotnet_version: $(dotnet_version)
     buildConfiguration: $(buildConfiguration)
     vsts_feed: $(Common.VSTS_FEED_PAT)
-    buildProjects: '**/GDrive.Anomalies.Library.csproj'
-    restoreProjects: '**/GDrive.Anomalies.Library.csproj'
-    packagesToPack: '**/GDrive.Anomalies.Library.csproj'
-
+    buildProjects: '**/*/GDrive.Anomalies.Library.csproj'
+    restoreProjects: '**/*/GDrive.Anomalies.Library.csproj'
+    packagesToPack: |
+        '**/GDrive.Anomalies.Library.csproj'
