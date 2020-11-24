@@ -1,0 +1,57 @@
+name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+
+resources:
+  repositories:
+    - repository: 'azurepipelines'
+      type: 'github'
+      name: 'Fazzani/azurepipelines'
+      endpoint: 'fazzani'
+      ref: refs/tags/v1.0.2
+
+parameters:
+- name: sonar_enabled
+  displayName: Sonar enabled
+  type: boolean
+  default: true
+
+pool:
+  vmImage: $(imageName)
+
+pr: none
+
+trigger:
+  branches:
+    include:
+    - master
+    - feature
+    - refs/tags/*
+  paths:
+    exclude:
+    - docs/*
+    - readme.md
+
+variables:
+  - group: Common
+  - name: buildConfiguration
+    value: 'Release'
+  - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+    value: true
+
+strategy:
+  matrix:
+    linux:
+     imageName: 'ubuntu-16.04'
+     dotnet_version: '5.0.X'
+    # windows:
+    #   imageName: 'windows-2019'
+    #   dotnet_version: '5.0.X'
+steps:
+- template: ci/az-dotnet-core.yml@azurepipelines
+  parameters:
+    dotnet_version: $(dotnet_version)
+    buildConfiguration: $(buildConfiguration)
+    vsts_feed: $(Common.VSTS_FEED_PAT)
+    buildProjects: '**/GDrive.Anomalies.Library.csproj'
+    restoreProjects: '**/GDrive.Anomalies.Library.csproj'
+    packagesToPack: '**/GDrive.Anomalies.Library.csproj'
+
