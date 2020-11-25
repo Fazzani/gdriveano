@@ -11,7 +11,6 @@ branches:
   feature:
     regex: ^features?[/-]
     increment: Patch
-    prevent-increment-of-merged-branch-version: true
     tag: alpha
   develop:
     is-mainline: true
@@ -24,7 +23,6 @@ branches:
       - develop
     tag: ''
     increment: Minor
-    prevent-increment-of-merged-branch-version: true
 ignore:
   sha: []
 merge-message-formats: {}
