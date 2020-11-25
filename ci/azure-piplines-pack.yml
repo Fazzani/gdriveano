@@ -26,7 +26,6 @@ trigger:
     - master
     - feature/*
     - develop
-    - refs/tags/*
   paths:
     exclude:
     - docs/*
