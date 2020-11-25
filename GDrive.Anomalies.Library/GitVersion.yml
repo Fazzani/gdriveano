@@ -2,12 +2,12 @@ mode: Mainline
 branches:
   develop:
     mode: ContinuousDeployment
-    tag: 'beta'
+    tag: beta
   feature:
     mode: ContinuousDeployment
     source-branches:
       - develop
-    tag: 'alpha'
+    tag: alpha
     increment: minor
   hotfix:
     mode: ContinuousDeployment
