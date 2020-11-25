@@ -9,16 +9,16 @@ resources:
 pool:
   vmImage: $(imageName)
 
-pr:
-  branches:
-    include:
-    - master
-    - develop
-    - refs/tags/v*
-  paths:
-    exclude:
-    - docs/*
-    - README.md
+pr: none
+  # branches:
+  #   include:
+  #   - master
+  #   - develop
+  #   - refs/tags/v*
+  # paths:
+  #   exclude:
+  #   - docs/*
+  #   - README.md
 
 trigger:
   branches:
