@@ -1,4 +1,4 @@
-mode: ContinuousDeployment
+mode: mainline
 assembly-versioning-scheme: MajorMinor
 assembly-file-versioning-scheme: MajorMinorPatchTag
 major-version-bump-message: '\+semver:\s?(breaking|major)'
