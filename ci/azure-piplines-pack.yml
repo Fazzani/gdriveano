@@ -26,6 +26,8 @@ trigger:
     - master
     - feature/*
     - develop
+    - bugfix/*
+    - hotfix/*
   paths:
     exclude:
     - docs/*
