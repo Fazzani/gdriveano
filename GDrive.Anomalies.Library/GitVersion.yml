@@ -8,6 +8,7 @@ branches:
     source-branches:
       - develop
     tag: 'alpha'
+    increment: minor
   hotfix:
     mode: ContinuousDeployment
     tag: alpha
