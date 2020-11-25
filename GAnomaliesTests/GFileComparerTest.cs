@@ -1,8 +1,7 @@
-﻿using GDrive.Anomalies;
-using Google.Apis.Drive.v3.Data;
+﻿using Google.Apis.Drive.v3.Data;
 using Xunit;
 
-namespace GAnomaliesTests
+namespace GDrive.Anomalies.Library.Tests
 {
     public class GFileComparerTest
     {

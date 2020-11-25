@@ -39,11 +39,19 @@ trigger:
     - readme.md
 
 variables:
-  buildConfiguration: 'Release'
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE : true
-  SONAR_PROJECT_KEY: 'gdriveano'
-  SONAR_PROJECT_NAME: 'gdriveano'
-  SONAR_ORG: fazzani-github
+  - group: Common
+  - name: buildConfiguration
+    value: 'Release'
+  - name: TestOutputDirectory
+    value: '$(Agent.TempDirectory)/TestResults'
+  - name: COV_REPORTS_DIR
+    value: '$(TestOutputDirectory)/mergedcoveragereport'
+  - name: SONAR_PROJECT_KEY
+    value: 'gdriveano'
+  - name: SONAR_PROJECT_NAME
+    value: 'gdriveano'
+  - name: SONAR_ORG
+    value: fazzani-github
 
 strategy:
   matrix:

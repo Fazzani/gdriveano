@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Google.Apis.Drive.v3.Data;
 
-namespace GDrive.Anomalies
+namespace GDrive.Anomalies.Library
 {
     public class GFileComparer : IEqualityComparer<File>
     {
