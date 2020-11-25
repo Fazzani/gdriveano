@@ -1,4 +1,12 @@
 mode: Mainline
+assembly-versioning-scheme: MajorMinor
+assembly-file-versioning-scheme: MajorMinorPatchTag
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+no-bump-message: '\+semver:\s?(none|skip)'
+commit-message-incrementing: Enabled
+next-version: 1.1.0
 branches:
   develop:
     mode: ContinuousDeployment

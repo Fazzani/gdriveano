@@ -1,0 +1,3 @@
+# GDrive anomies library
+
+[![GDrive.Anomalies.Library package in packages feed in Azure Artifacts](https://feeds.dev.azure.com/henifazzani/_apis/public/Packaging/Feeds/9a9327ae-8c62-4cc1-80a5-7365f97a5b87/Packages/60d0764f-c543-465e-98c6-04c52bf3e09e/Badge)](https://dev.azure.com/henifazzani/SynkerAPI/_packaging?_a=package&feed=9a9327ae-8c62-4cc1-80a5-7365f97a5b87&package=60d0764f-c543-465e-98c6-04c52bf3e09e&preferRelease=true)
