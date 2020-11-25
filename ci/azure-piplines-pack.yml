@@ -49,6 +49,8 @@ strategy:
     #   imageName: 'windows-2019'
     #   dotnet_version: '5.0.x'
 steps:
+- script: 
+    export
 - template: ci/az-dotnet-core-pack.yml@azurepipelines
   parameters:
     dotnet_version: $(dotnet_version)
