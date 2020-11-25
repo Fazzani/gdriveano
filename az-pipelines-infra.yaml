@@ -1,0 +1,88 @@
+name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+
+parameters:
+- name: var_group_name
+  displayName: Variable group name
+  type: string
+  default: Common
+
+pool:
+  vmImage: $(imageName)
+
+pr:
+  branches:
+    include:
+    - master
+    - develop
+    - refs/tags/v*
+  paths:
+    exclude:
+    - docs/*
+    - README.md
+
+trigger:
+  branches:
+    include:
+    - master
+    - develop
+    - refs/tags/v*
+    - feature/*
+  paths:
+    exclude:
+    - docs/*
+    - readme.md
+
+variables:
+  - group: Common
+  - name: buildConfiguration
+    value: 'Release'
+  - name: PROJECT
+    value: SynkerAPI
+  - name: var_value
+    value: "testValue_$(Build.BuildNumber)"
+  - name: var_name
+    value: test
+
+strategy:
+  matrix:
+    linux:
+     imageName: 'ubuntu-16.04'
+
+steps:
+
+- task: Bash@3
+  displayName: Install az devops extension
+  inputs:
+    targetType: inline
+    script: |
+      az pipelines -h || az extension add --name azure-devops
+
+- task: AzureCLI@2
+  displayName: "Create variable $(var_value)"
+  inputs:
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    azureSubscription: az-synker-sub
+    inlineScript: |
+      echo $AZ_DEVOPS_PAT | az devops login
+      az pipelines variable-group list --org $AZ_DEVOPS_BASE_URL -p $PROJECT
+      varGroupId=$(az pipelines variable-group list --org $AZ_DEVOPS_BASE_URL -p $PROJECT --query "[?name=='${{ parameters.var_group_name }}'].id" -o tsv)
+      az pipelines variable-group variable list --org $MY_AZURE_DEVOPS_ORG --project SynkerAPI --group-id $varGroupId -o json --query "$(var_name)" &&
+        {
+          echo "variable $(var_name) already exist"
+          az pipelines variable-group variable update --id $varGroupId --name "$(var_name)" --value "$(var_value)" --org $AZ_DEVOPS_BASE_URL -p SynkerAPI
+          exit 0;
+        }
+      az pipelines variable-group variable create --id $varGroupId --name "$(var_name)" --value "$(var_value)" --org $AZ_DEVOPS_BASE_URL -p SynkerAPI
+
+- task: AzureCLI@2
+  displayName: "Delete variable $(var_value)"
+  inputs:
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    azureSubscription: az-synker-sub
+    inlineScript: |
+      az pipelines variable-group list --org $AZ_DEVOPS_BASE_URL -p $PROJECT
+      varGroupId=$(az pipelines variable-group list --org $AZ_DEVOPS_BASE_URL -p $PROJECT --query "[?name=='${{ parameters.var_group_name }}'].id" -o tsv)
+      az pipelines variable-group variable delete --id $varGroupId --name "$(var_name)"  --org $AZ_DEVOPS_BASE_URL -p $PROJECT --yes
+

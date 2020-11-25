@@ -13,10 +13,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		azure-pipelines.yml = azure-pipelines.yml
+		ci\azure-piplines-pack.yml = ci\azure-piplines-pack.yml
+		nuget.config = nuget.config
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAnomaliesTests", "GAnomaliesTests\GAnomaliesTests.csproj", "{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GDrive.Anomalies.Library.Tests", "GAnomaliesTests\GDrive.Anomalies.Library.Tests.csproj", "{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GDrive.Anomalies.Library", "GDrive.Anomalies.Library\GDrive.Anomalies.Library.csproj", "{F98BDC03-5033-43BF-9BAB-35EFA4F22009}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +44,10 @@ Global
 		{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94A60B6C-F7AD-40D5-B965-A0E5E5532E3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F98BDC03-5033-43BF-9BAB-35EFA4F22009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F98BDC03-5033-43BF-9BAB-35EFA4F22009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F98BDC03-5033-43BF-9BAB-35EFA4F22009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F98BDC03-5033-43BF-9BAB-35EFA4F22009}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

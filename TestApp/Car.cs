@@ -1,19 +1,35 @@
 ﻿namespace ConsoleApp
 {
-    public class Car
+    //public class Car
+    //{
+    //    public string Model { get; init; }
+    //    public string Owner { get; init; }
+
+    //    public void Deconstruct(out string model, out string owner)
+    //    {
+    //        model = this.Model;
+    //        owner = this.Owner;
+    //    }
+
+    //    public bool IsMine(string owner)
+    //    {
+    //        return Owner.Equals(owner, System.StringComparison.InvariantCultureIgnoreCase);
+    //    }
+    //}
+
+    public record Car
     {
         public string Model { get; set; }
         public string Owner { get; set; }
+        public bool IsMine(string owner) =>
+            Owner.Equals(owner, System.StringComparison.InvariantCultureIgnoreCase);
 
         public void Deconstruct(out string model, out string owner)
         {
             model = this.Model;
             owner = this.Owner;
         }
-
-        public bool IsMine(string owner)
-        {
-            return owner.Equals(owner, System.StringComparison.InvariantCultureIgnoreCase);
-        }
     }
+
+    public record Person(string Firstname, string Lastname);
 }

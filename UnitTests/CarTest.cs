@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using ConsoleApp;
 using Xunit;
 
@@ -38,6 +39,7 @@ namespace UnitTests
             var expectedOwner = string.Empty;
 
             var car = new Car { Model = expectedModel, Owner = expectedOwner };
+            car.Model = "test";
 
             Assert.True(car.IsMine(expectedOwner));
         }
