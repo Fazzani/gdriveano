@@ -1,9 +1,23 @@
 mode: Mainline
-next-version: 1.0.0
 branches:
+  develop:
+    mode: ContinuousDeployment
+    tag: 'beta'
   feature:
+    mode: ContinuousDeployment
+    source-branches:
+      - develop
+    tag: 'alpha'
+  hotfix:
+    mode: ContinuousDeployment
     tag: alpha
-  master:
-    tag: ''
+  bugfix:
+    mode: ContinuousDeployment
+    regex: ^bugfix[/-]
+    increment: patch
+    source-branches:
+      - develop
+    tag: alpha
 ignore:
   sha: []
+merge-message-formats: {}
