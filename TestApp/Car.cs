@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp
+﻿using System;
+
+namespace ConsoleApp
 {
     //public class Car
     //{
@@ -32,4 +34,13 @@
     }
 
     public record Person(string Firstname, string Lastname);
+
+    class MyClass
+    {
+        public static int X = 10;
+        public static void Show()
+        {
+            X = 20;
+        }
+    }
 }

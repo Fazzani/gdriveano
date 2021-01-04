@@ -5,4 +5,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Up.OD.Core.WebApi.Client-v1-client-api" Version="1.0.39" />
+  </ItemGroup>
+
 </Project>

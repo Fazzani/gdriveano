@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GDrive.Anomalies.Library.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GDrive.Anomalies.Library", "GDrive.Anomalies.Library\GDrive.Anomalies.Library.csproj", "{F98BDC03-5033-43BF-9BAB-35EFA4F22009}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReleaseNotes", "ReleaseNotes\ReleaseNotes.csproj", "{FD31F288-CD63-46CC-A655-CEBE9AF8F0A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{F98BDC03-5033-43BF-9BAB-35EFA4F22009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F98BDC03-5033-43BF-9BAB-35EFA4F22009}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F98BDC03-5033-43BF-9BAB-35EFA4F22009}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD31F288-CD63-46CC-A655-CEBE9AF8F0A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD31F288-CD63-46CC-A655-CEBE9AF8F0A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD31F288-CD63-46CC-A655-CEBE9AF8F0A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD31F288-CD63-46CC-A655-CEBE9AF8F0A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
