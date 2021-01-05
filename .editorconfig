@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# RCS1077: Optimize LINQ method call.
+dotnet_diagnostic.RCS1077.severity = none

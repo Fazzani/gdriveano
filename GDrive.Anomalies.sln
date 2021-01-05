@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DE965695-1458-4794-A9F1-C65B18338824}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		azure-pipelines.yml = azure-pipelines.yml
 		ci\azure-piplines-pack.yml = ci\azure-piplines-pack.yml
@@ -22,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GDrive.Anomalies.Library.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GDrive.Anomalies.Library", "GDrive.Anomalies.Library\GDrive.Anomalies.Library.csproj", "{F98BDC03-5033-43BF-9BAB-35EFA4F22009}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReleaseNotes", "ReleaseNotes\ReleaseNotes.csproj", "{FD31F288-CD63-46CC-A655-CEBE9AF8F0A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseNotes", "ReleaseNotes\ReleaseNotes.csproj", "{FD31F288-CD63-46CC-A655-CEBE9AF8F0A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
