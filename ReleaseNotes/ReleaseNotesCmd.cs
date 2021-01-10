@@ -44,7 +44,10 @@ namespace ReleaseNotes
                 PageReleaseNotePath = PageReleaseNotePath,
                 VssProjectName = VssProjectName,
                 ReleaseNotesProjectName = ReleaseNotesProjectName,
-                DryRun = DryRun
+                ReleaseNoteVersion = ReleaseNoteVersion,
+                Query = Query,
+                DryRun = DryRun,
+                IterationOffset = IterationOffset
             };
 
             // Create a connection
@@ -71,6 +74,15 @@ namespace ReleaseNotes
 
         [Option(Description = "Release notes page path", ShortName = "n")]
         public string PageReleaseNotePath { get; set; }
+
+        [Option("-q|--query", "Query Id Or Path: used to retreive release notes work items", CommandOptionType.SingleValue)]
+        public string Query { get; set; }
+
+        [Option("-v|--version", "Overrite release notes version", CommandOptionType.SingleValue)]
+        public string ReleaseNoteVersion { get; set; }
+
+        [Option("-i|--iteration", "Iteration offset (ex: +1, -1)", CommandOptionType.SingleValue)]
+        public string IterationOffset { get; set; } = "0";
 
         [Option("-d|--dry", "If true, the release will be displayed on console", CommandOptionType.NoValue)]
         public bool DryRun { get; set; } = false;
